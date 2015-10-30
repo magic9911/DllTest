@@ -21,5 +21,13 @@ namespace testUMD {
         public void SetPOS(string data) {
             listBox1.Items.Add(data);
         }
+
+        public void SetBid(double bid) {
+            button2.Text = "BUY" + System.Environment.NewLine  + bid.ToString() ;
+        }
+
+        public void SetAsk(double ask) {
+            button1.Text = "SELL" + System.Environment.NewLine + ask.ToString();
+        }
     }
 }

@@ -38,7 +38,14 @@ namespace testUnmanagedDLL {
 
         [DllExport("Data_POST", CallingConvention = CallingConvention.StdCall)]
         public static void Data_POST(double Bid,double Ask ,string Pos) {
-            
+            if (null == oneForm)
+                return;
+
+            oneForm.Invoke(new Action(() => {
+                oneForm.SetPOS(Pos);
+                oneForm.SetBid(Bid);
+                oneForm.SetAsk(Ask);
+            }));
         }
 
         [DllExport("Get_NewOrder", CallingConvention = CallingConvention.StdCall)]
@@ -61,6 +68,7 @@ namespace testUnmanagedDLL {
 
             oneForm.Invoke(new Action(() => {
                 oneForm.Text = title;
+                oneForm.SetPOS(title);
             }));
         }
     }
