@@ -12,6 +12,9 @@ namespace testUnmanagedDLL {
         private static Form1 oneForm;
         private static Thread appThread;
 
+        public static string res = string.Empty;
+
+
         [DllExport("GUI_Form", CallingConvention = CallingConvention.StdCall)]
         public static void GUI_Form() {
             appThread = new Thread(new ThreadStart(OpenForm));
@@ -37,10 +40,11 @@ namespace testUnmanagedDLL {
 
 
         [DllExport("Data_POST", CallingConvention = CallingConvention.StdCall)]
-        public static void Data_POST(double Bid,double Ask ,string Pos) {
+        public static void Data_POST(double Bid,double Ask ,IntPtr charPos) {
             if (null == oneForm)
                 return;
 
+            var Pos = Marshal.PtrToStringAnsi(charPos);
             oneForm.Invoke(new Action(() => {
                 oneForm.SetPOS(Pos);
                 oneForm.SetBid(Bid);
@@ -49,9 +53,13 @@ namespace testUnmanagedDLL {
         }
 
         [DllExport("Get_NewOrder", CallingConvention = CallingConvention.StdCall)]
-        public static string Get_NewOrder() {
-
-            return null;
+        public static IntPtr Get_NewOrder() {
+            string temp = res;
+            if (res != string.Empty) {
+                res = string.Empty;
+                return Marshal.StringToHGlobalUni(temp);
+            }
+            return Marshal.StringToHGlobalUni(res);
         }
 
         [DllExport("Get_CloseOrder", CallingConvention = CallingConvention.StdCall)]
