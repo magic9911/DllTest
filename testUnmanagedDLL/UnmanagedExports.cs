@@ -38,17 +38,27 @@ namespace testUnmanagedDLL {
             
         }
 
+        [DllExport("Data_BidAsk", CallingConvention = CallingConvention.StdCall)]
+        public static void Data_BidAsk(double Bid, double Ask, IntPtr Symbol)
+        {
+            if (null == oneForm)
+                return;
+
+            var sym = Marshal.PtrToStringAnsi(Symbol);
+            oneForm.Invoke(new Action(() => {
+                oneForm.SetBidAsk(Bid, Ask, sym);
+            }));
+        }
 
         [DllExport("Data_POST", CallingConvention = CallingConvention.StdCall)]
-        public static void Data_POST(double Bid,double Ask ,IntPtr charPos) {
+        public static void Data_POST(double Balance,double Equity, IntPtr charPos) {
             if (null == oneForm)
                 return;
 
             var Pos = Marshal.PtrToStringAnsi(charPos);
             oneForm.Invoke(new Action(() => {
                 oneForm.SetPOS(Pos);
-                oneForm.SetBid(Bid);
-                oneForm.SetAsk(Ask);
+                oneForm.SetInfo(Balance, Equity);
             }));
         }
 

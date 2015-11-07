@@ -38,12 +38,16 @@ namespace testUMD {
             //listBox1.Items.Add(data);
         }
 
-        public void SetBid(double bid) {
+        public void SetBidAsk(double bid, double ask, string Symbol) {
+            lb_Symbol.Text = Symbol;
             button2.Text = "BUY" + System.Environment.NewLine  + bid.ToString() ;
+            button1.Text = "SELL" + System.Environment.NewLine + ask.ToString();
         }
 
-        public void SetAsk(double ask) {
-            button1.Text = "SELL" + System.Environment.NewLine + ask.ToString();
+        public void SetInfo(double Balance,double Equity) {
+            lb_balance.Text = Balance.ToString();
+            lb_Equity.Text = Equity.ToString();
+
         }
 
         private void button1_Click(object sender, EventArgs e) {
