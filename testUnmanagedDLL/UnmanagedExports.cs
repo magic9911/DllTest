@@ -13,7 +13,7 @@ namespace testUnmanagedDLL {
         private static Thread appThread;
 
         public static string res = string.Empty;
-
+        public static string res_close = string.Empty;
 
         [DllExport("GUI_Form", CallingConvention = CallingConvention.StdCall)]
         public static void GUI_Form() {
@@ -73,9 +73,14 @@ namespace testUnmanagedDLL {
         }
 
         [DllExport("Get_CloseOrder", CallingConvention = CallingConvention.StdCall)]
-        public static string Get_CloseOrder() {
-
-            return null;
+        public static IntPtr Get_CloseOrder() {
+            string temp = res_close;
+            if (res_close != string.Empty)
+            {
+                res_close = string.Empty;
+                return Marshal.StringToHGlobalUni(temp);
+            }
+            return Marshal.StringToHGlobalUni(res_close);
         }
 
 

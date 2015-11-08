@@ -9,7 +9,9 @@ using System.Windows.Forms;
 using testUnmanagedDLL;
 
 namespace testUMD {
+
     public partial class Form1 : Form {
+        private string order_id = string.Empty;
         public Form1() {
             InitializeComponent();
             Lot = 1.0M;
@@ -34,8 +36,23 @@ namespace testUMD {
 
         }
 
+        private string[] setRows
+        {
+            set
+            {
+                dataGridView1.Rows.Add(value[0], value[1], value[2], value[3], value[4], value[5], value[6]);
+            }
+
+        }
+
         public void SetPOS(string data) {
-            //listBox1.Items.Add(data);
+            string[] order = data.Split('|');
+            dataGridView1.Rows.Clear();
+            for (int i = 0; i < order.Length-1; i++)
+            {
+                setRows = order[i].Split(';');
+
+            }
         }
 
         public void SetBidAsk(double bid, double ask, string Symbol) {
@@ -67,6 +84,25 @@ namespace testUMD {
             if (decimal.TryParse(txtLot.Text, out result)) {
                 lot = result;
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            GoodDLL.res_close = "CLOSEALL";
+            dataGridView1.Rows.Clear();
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            DataGridViewRow row = dataGridView1.Rows[rowIndex];
+            order_id = row.Cells[0].Value.ToString();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            GoodDLL.res_close = order_id;
+            dataGridView1.Rows.Clear();
         }
     }
 }
