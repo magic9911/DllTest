@@ -96,7 +96,7 @@ namespace testUMD {
         {
             int rowIndex = e.RowIndex;
             DataGridViewRow row = dataGridView1.Rows[rowIndex];
-            order_id = row.Cells[0].Value.ToString();
+            order_id = row.Cells[0].Value?.ToString();
         }
 
         private void button4_Click(object sender, EventArgs e)
